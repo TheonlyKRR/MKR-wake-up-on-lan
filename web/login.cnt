@@ -1,0 +1,19 @@
+﻿<section id="intro">
+  <hgroup>
+  <h1>Login<span>- Um Einstellungen vornehmen zu können, müssen Sie sich zuerst einloggen.</span></h1>
+  </hgroup>
+</section>
+<div class="holder_content">
+	<section class="group1">
+	</section>
+	<section class="group2">
+		<h3>Login</h3>
+		<input type="text" name="usr" id="usr" placeholder="Benutzername" style="width: 200px; margin: auto;" onkeypress="if(event.keyCode == 13) { document.getElementById('loginbtn').click(); }" autofocus>
+		<input type="password" name="pwd" id="pwd" placeholder="Passwort" style="width: 200px; margin-top: 5px;" onkeypress="if(event.keyCode == 13) { document.getElementById('loginbtn').click(); }">
+		<button id="loginbtn" onclick="login(document.getElementById('usr').value, document.getElementById('pwd').value);" style="width: 208px; margin-left: -1px; margin-top: 5px;">Login</button>
+	</section>
+	<section class="group3">
+	</section>
+</div>
+<div class="holder_content">
+</div>

@@ -1,0 +1,20 @@
+{
+  "vsn": "1.1",
+  "usr0": "root",
+  "ipconf": "static",
+  "ipstatic": "192.168.0.1",
+  "ipdynamic": "192.168.0.103",
+  "wutype": "onstartup",
+  "stndbyaftstrtup": "true",
+  "wuint": 20,
+  "devname0": "Multimedia-Rechner10",
+  "devip0": "192.168.0.100",
+  "devname1": "Multimedia-Rechner11",
+  "devip1": "192.168.0.101",
+  "devname2": "Multimedia-Rechner12",
+  "devip2": "192.168.0.102",
+  "devname3": "Multimedia-Rechner13",
+  "devip3": "192.168.0.103",
+  "devname4": "Multimedia-Rechner14",
+  "devip4": "192.168.0.104"
+}

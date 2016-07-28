@@ -1,0 +1,115 @@
+﻿<section id="intro">
+  <hgroup>
+  <h1>Einstellungen<span>- Konfigurieren Sie Ihr WoL-Gerät.</span></h1>
+  </hgroup>
+</section>
+<div id="msg"></div>
+<div id="settings" class="holder_content">
+	<section class="group1">
+		<h3>Gerät</h3>
+	
+		<fieldset>
+			<legend>IP-Adresse des WoL-Gerätes</legend>
+			<div>
+				<input name="wolip" id="static" type="radio" onchange="saveData('ipconf', 'static');">
+				<label>Statische IP-Adresse</label>
+				<br>
+				<input id="ipstatic" type="text" placeholder="IP-Adresse" class="mrgnlft25" onchange="validateIpAddress('ipstatic', this);">
+				<br>
+				<input name="wolip" id="dynamic" type="radio" onchange="saveData('ipconf', 'dynamic');">
+				<label>Dynamische IP-Adresse</label>
+				<br>
+				<input id="ipdynamic" type="text" placeholder="IP-Adresse" class="mrgnlft25" style="color: grey;" readonly>
+			</div>
+		</fieldset>
+	</section>
+	<section class="group2">
+		<h3>Wake Up on LAN</h3>
+		<fieldset>
+			<legend>Aufwecken WoL-Paket senden</legend>
+			<div>
+				<input name="wakeuptype" id="onstartup" type="radio" onchange="saveData('wutype', 'onstartup');">
+				<label>Beim Einschalten des Geräts</label>
+				<br>
+				<input name="wakeuptype" id="interval" type="radio" onchange="saveData('wutype', 'interval');">
+				<label>Zyklisch (alle x Minuten)</label>
+				<br>
+				<input id="wuint" type="number" onchange="validateInterval('wuint', this, 1, 32000);" placeholder="Intervall in Minuten" class="mrgnlft25">
+				<br>
+			</div>
+		</fieldset>
+		<br>
+		<fieldset>
+			<legend>Aufzuweckende Geräte</legend>
+			<div>
+				<h4>Gerät 1</h4>
+				<label class="mrgnlft25">Name:</label>
+				<br>
+				<input id="devname0" class="mrgnlft25" type="text" placeholder="Gerätename" onchange="validateString('devname0', this);">
+				<label class="mrgnlft25">IP-Adresse:</label>
+				<br>
+				<input id="devip0" class="mrgnlft25" type="text" placeholder="IP-Adresse" onchange="validateIpAddress('devip0', this);">
+				<br>
+				<br>
+				<h4>Gerät 2</h4>
+				<label class="mrgnlft25">Name:</label>
+				<br>
+				<input id="devname1" class="mrgnlft25" type="text" placeholder="Gerätename" onchange="validateString('devname1', this);">
+				<label class="mrgnlft25">IP-Adresse:</label>
+				<br>
+				<input id="devip1" class="mrgnlft25" type="text" placeholder="IP-Adresse" onchange="validateIpAddress('devip1', this);">
+				<br>
+				<br>
+				<h4>Gerät 3</h4>
+				<label class="mrgnlft25">Name:</label>
+				<br>
+				<input id="devname2" class="mrgnlft25" type="text" placeholder="Gerätename" onchange="validateString('devname2', this);">
+				<label class="mrgnlft25">IP-Adresse:</label>
+				<br>
+				<input id="devip2" class="mrgnlft25" type="text" placeholder="IP-Adresse" onchange="validateIpAddress('devip2', this);">
+				<br>
+				<br>
+				<h4>Gerät 4</h4>
+				<label class="mrgnlft25">Name:</label>
+				<br>
+				<input id="devname3" class="mrgnlft25" type="text" placeholder="Gerätename" onchange="validateString('devname3', this);">
+				<label class="mrgnlft25">IP-Adresse:</label>
+				<br>
+				<input id="devip3" class="mrgnlft25" type="text" placeholder="IP-Adresse" onchange="validateIpAddress('devip3', this);">
+				<br>
+				<br>
+				<h4>Gerät 5</h4>
+				<label class="mrgnlft25">Name:</label>
+				<br>
+				<input id="devname4" class="mrgnlft25" type="text" placeholder="Gerätename" onchange="validateString('devname4', this);">
+				<label class="mrgnlft25">IP-Adresse:</label>
+				<br>
+				<input id="devip4" class="mrgnlft25" type="text" placeholder="IP-Adresse" onchange="validateIpAddress('devip4', this);">
+				<br>
+				<br>
+			</div>
+		</fieldset>
+	</section>
+	<section class="group3">
+		<h3>Benutzer</h3>
+		<fieldset>
+			<legend>Benutzer 1</legend>
+			<div>
+				<label class="mrgnlft25">Name:</label>
+				<br>
+				<input id="usr0" class="mrgnlft25" type="text" placeholder="Benutzername" onchange="validateString('usr0', this);">
+				<br><br>
+				<h4>Passwort ändern</h4>
+				<label class="mrgnlft25">Passwort eingeben:</label>
+				<br>
+				<input id="pwd00" class="mrgnlft25" type="password" placeholder="Passwort">
+				<br>
+				<label class="mrgnlft25">Passwort wiederholen:</label>
+				<br>
+				<input id="pwd01" class="mrgnlft25" type="password" placeholder="Passwort">
+			</div>
+		</fieldset>
+	</section>
+</div>
+<div class="holder_content">
+</div>

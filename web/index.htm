@@ -1,0 +1,141 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="iso-8859-1">
+<title>MKR-WoL</title>
+<link rel="shortcut icon" href="favicon.ico"/>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<script type="text/javascript">
+var u = "";
+var p = "";
+function login(usr, pwd) {
+	u = usr;
+	p = pwd;
+	ldCnt('content.cnt', 'content', '', '');
+	ldCnt('navi.nav', 'nav', '', '');
+}
+function ldLogo() {
+	document.getElementById("logoImg").src = "logo.png";
+}
+function ldCnt(cnt, container, params, callback) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+		if(container)
+			document.getElementById(container).innerHTML = xhttp.responseText;
+			if(container == "content")
+				initCntActions();
+		else
+			if (callback) callback(JSON.parse(xhttp.responseText));
+    }
+  };
+  xhttp.open("GET", cnt + "?u=" + u + "&p=" + p + params, true);
+  xhttp.send();
+} 
+function initCntActions() {
+	if(!!document.getElementById("settings")) {
+		ldCnt("conf.jsn", "", "", function(data){
+			document.getElementById("version").appendChild(document.createTextNode(" - Version " + data.vsn));
+			// WoL-device
+			if(data.ipconf == "static") {
+				document.getElementById("static").checked=true;
+			} else if(data.ipconf == "dynamic") {
+				document.getElementById("dynamic").checked=true;
+			}
+			document.getElementById("ipstatic").value = data.ipstatic;
+			document.getElementById("ipdynamic").value = data.ipdynamic;
+			if(data.wutype == "onstartup") {
+				document.getElementById("onstartup").checked=true;
+			} else if(data.ipconf == "interval") {
+				document.getElementById("interval").checked=true;
+			}
+			document.getElementById("wuint").value = data.wuint;
+			document.getElementById("devname0").value = data.devname0;
+			document.getElementById("devip0").value = data.devip0;
+			document.getElementById("devname1").value = data.devname1;
+			document.getElementById("devip1").value = data.devip1;
+			document.getElementById("devname2").value = data.devname2;
+			document.getElementById("devip2").value = data.devip2;
+			document.getElementById("devname3").value = data.devname3;
+			document.getElementById("devip3").value = data.devip3;
+			document.getElementById("devname4").value = data.devname4;
+			document.getElementById("devip4").value = data.devip4;
+			document.getElementById("usr0").value = data.usr0;
+		});
+	}
+}
+function saveData(key, data) {
+	if(key == "") 
+		return false;
+	// encodeURIComponent(data)
+	ldCnt("save.jsn", "", "&k=" + key + "&d=" + data, function(data) {
+		showMsg("Änderung erfolgreich gespeichert.", "info");
+		setTimeout(showMsg("", "info"), 3000);
+	});
+	showMsg("Änderung erfolgreich gespeichert.", "info");
+	setTimeout(function() {showMsg("", "info")}, 3000);
+}
+function validateIpAddress(key, elem) {
+	elem.style = "";
+	if(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(elem.value)) {
+		saveData(key, elem.value);
+		return true
+	}
+	elem.style = "border: red solid 1px;";
+	showMsg("Sie haben eine falsche IP-Adresse angegeben. Eingabe bitte überprüfen!", "error");
+	return false  
+}
+function validateInterval(key, elem, min, max) {
+	elem.style = "";
+	if(elem.value > min && elem.value < max) {
+		saveData(key, elem.value);
+		return true
+	}
+	elem.style = "border: red solid 1px;";
+	showMsg("Der Wertebereich muss zwischen " + min + " und " + max + " liegen. Eingabe bitte überprüfen!", "error");
+	return false  
+}
+function validateString(key, elem) {
+	elem.style = "";
+	if(elem.value.length <= 20) {
+		saveData(key, elem.value);
+		return true
+	}
+	elem.style = "border: red solid 1px;";
+	showMsg("Die maximale Anzahl von 20 verfügbaren Zeichen wurde überschritten. Eingabe bitte überprüfen!", "error");
+	return false  
+}
+function showMsg(msg, type) {
+	if(type == "error") {
+		document.getElementById("msg").style = "";
+		document.getElementById("msg").style = "color: red; font-weight: bold;";
+	}
+	if(type == "info") {
+		document.getElementById("msg").style = "";
+		document.getElementById("msg").style = "color: green; font-weight: bold;";
+	}
+	if(document.getElementById("msg").textContent)
+		document.getElementById("msg").textContent = "";
+	document.getElementById("msg").appendChild(document.createTextNode(msg));
+}
+</script>
+</head>
+<!-- <body onload="ldCnt('content.cnt', 'content', '', '');ldCnt('navi.nav', 'nav', '', '');ldLogo();"> -->
+<body onload="ldCnt('cnt.cnt', 'content', '', '');ldCnt('log.nav', 'nav', '', '');ldLogo();">
+   <div class="bg">
+		<div id="container">
+			<header>
+				<a href="#" id="logo"><img id="logoImg" src="" width="288" height="55" alt="MKR-WoL"/></a>
+				<nav id="nav"></nav>
+			</header>		
+			<div id="content"></div>
+		</div>
+		<footer>
+			<div class="container">  
+				<div id="FooterTwo"> © <a href="http://www.mkr-solutions.at" target="_blank">MKR-Solutions</a></div>
+				<div id="FooterTree">MKR-Wake up on LAN device <span id="version"></span></div> 
+			</div>
+		</footer>
+   </div>
+  </body>
+</html>
