@@ -54,21 +54,31 @@ confStruct config;
 // LCD
 // @DEVELOPMENT DEVICE
 LiquidCrystal_I2C lcd(0x27, 20, 4);     // set the LCD address to 0x27 for a 20 chars and 4 line display
+byte customChar[8] = {
+  0b10101,
+  0b10101,
+  0b10101,
+  0b10101,
+  0b10101,
+  0b10101,
+  0b10101,
+  0b10101
+};
 
 void setup() {
-    // initialize LCD
-    lcd.init();                           
-    // Print welcome message to the LCD
-    printDisplay("MKR-WoL", "Version 1.0", "powered by", "MKR-Solutions");
-    lcd.backlight();
-    delay(500);
-    // initialize SD
     if(debugMode) {
+      // initialize LCD
+      lcd.init();                           
+      lcd.backlight();
+      lcd.createChar(0, customChar);
+      // Print welcome message to the LCD
+      printDisplay("MKR-WoL", "Version 1.0", "powered by", "MKR-Solutions");
       Serial.begin(250000);       // for debugging
       // initialize SD card
       Serial.println("Initializing SD card...");
       printDisplay("Initializing", "SD card...", "", ""); 
     }
+    // initialize SD
     if(!SD.begin(4)) {
         if(debugMode) {
           Serial.println("ERROR - SD card initialization failed!");
@@ -86,9 +96,8 @@ void setup() {
         Serial.println("ERROR - Can't find index.htm file!");
       return;  // can't find index file
     }
-    Serial.println("SUCCESS - Found index.htm file.");
-
     if(debugMode) {
+      Serial.println("SUCCESS - Found index.htm file.");
       Serial.println("Initializing ethernet...");
       printDisplay("Initializing", "ethernet...", "", ""); 
     }
@@ -97,13 +106,11 @@ void setup() {
       Serial.print("server is at ");
       config.ipdynamic = Ethernet.localIP();
       Serial.println(config.ipdynamic);
+      printDisplay("MKR-WoL", "IP of Webserver is:", ipToString(config.ipdynamic), "Have fun!"); 
     }
-    printDisplay("MKR-WoL", "IP of Webserver is:", ipToString(config.ipdynamic), "Have fun!"); 
-    
     loadConfig(false);
     // change config to save the dynamic ip
     changeConfig();
-    
     server.begin();           // start to listen for clients
 }
 
@@ -169,7 +176,7 @@ void loop() {
                     String params = "";
                     String key = "";
                     String data = "";
-                    String u = "";
+                    String u = "-";
                     String p = "";
                     bool loggedIn = false;
                     // get clean url
@@ -220,9 +227,7 @@ void loop() {
                       if(loggedIn) {
                         // validate changed settings
                         // filter and validate user input (urlencoding,...)
-                        
                         if(key == "usr0") {
-                          
                           config.usr = data;
                         } else if(key == "pwd0") {
                           config.pwd = data;
@@ -231,43 +236,50 @@ void loop() {
                           config.ipstatic[1] = getValue(data, '.', 1).toInt();
                           config.ipstatic[2] = getValue(data, '.', 2).toInt();
                           config.ipstatic[3] = getValue(data, '.', 3).toInt();
-                        }
-//                        config.ipconf = root["ipconf"].as<String>();
-//                        // config.ipdynamic = ipAddress;
-//                        config.wutype = root["wutype"].as<String>();
-//                        config.stndbyaftstrtup = root["stndbyaftstrtup"].as<bool>();
-//                        config.wuint = root["wuint"].as<int>();
-                        else if(key == "devname0") {
+                        } else if(key == "ipconf") {
+                          config.ipconf = data;
+                        } else if(key == "wutype") {
+                          config.wutype = data;
+                        } else if(key == "wuint") {
+                          config.wuint = data.toInt();
+                        } else if(key == "stndbyaftstrtup") {
+                          config.stndbyaftstrtup = data.toInt();
+                        } else if(key == "devname0") {
                           config.devname0 = data;
                         } else if(key == "devip0") {
                           config.devip0[0] = getValue(data, '.', 0).toInt();
                           config.devip0[1] = getValue(data, '.', 1).toInt();
                           config.devip0[2] = getValue(data, '.', 2).toInt();
                           config.devip0[3] = getValue(data, '.', 3).toInt();
+                        } else if(key == "devname1") {
+                          config.devname1 = data;
+                        } else if(key == "devip1") {
+                          config.devip1[0] = getValue(data, '.', 0).toInt();
+                          config.devip1[1] = getValue(data, '.', 1).toInt();
+                          config.devip1[2] = getValue(data, '.', 2).toInt();
+                          config.devip1[3] = getValue(data, '.', 3).toInt();
+                        } else if(key == "devname2") {
+                          config.devname2 = data;
+                        } else if(key == "devip2") {
+                          config.devip2[0] = getValue(data, '.', 0).toInt();
+                          config.devip2[1] = getValue(data, '.', 1).toInt();
+                          config.devip2[2] = getValue(data, '.', 2).toInt();
+                          config.devip2[3] = getValue(data, '.', 3).toInt();
+                        } else if(key == "devname3") {
+                          config.devname3 = data;
+                        } else if(key == "devip3") {
+                          config.devip3[0] = getValue(data, '.', 0).toInt();
+                          config.devip3[1] = getValue(data, '.', 1).toInt();
+                          config.devip3[2] = getValue(data, '.', 2).toInt();
+                          config.devip3[3] = getValue(data, '.', 3).toInt();
+                        } else if(key == "devname4") {
+                          config.devname4 = data;
+                        } else if(key == "devip4") {
+                          config.devip4[0] = getValue(data, '.', 0).toInt();
+                          config.devip4[1] = getValue(data, '.', 1).toInt();
+                          config.devip4[2] = getValue(data, '.', 2).toInt();
+                          config.devip4[3] = getValue(data, '.', 3).toInt();
                         }
-
-
-//                        config.devip1[0] = getValue(root["devip1"].as<String>(), '.', 0).toInt();
-//                        config.devip1[1] = getValue(root["devip1"].as<String>(), '.', 1).toInt();
-//                        config.devip1[2] = getValue(root["devip1"].as<String>(), '.', 2).toInt();
-//                        config.devip1[3] = getValue(root["devip1"].as<String>(), '.', 3).toInt();
-//                        config.devname2 = root["devname2"].as<String>();
-//                        config.devip2[0] = getValue(root["devip2"].as<String>(), '.', 0).toInt();
-//                        config.devip2[1] = getValue(root["devip2"].as<String>(), '.', 1).toInt();
-//                        config.devip2[2] = getValue(root["devip2"].as<String>(), '.', 2).toInt();
-//                        config.devip2[3] = getValue(root["devip2"].as<String>(), '.', 3).toInt();
-//                        config.devname3 = root["devname3"].as<String>();
-//                        config.devip3[0] = getValue(root["devip3"].as<String>(), '.', 0).toInt();
-//                        config.devip3[1] = getValue(root["devip3"].as<String>(), '.', 1).toInt();
-//                        config.devip3[2] = getValue(root["devip3"].as<String>(), '.', 2).toInt();
-//                        config.devip3[3] = getValue(root["devip3"].as<String>(), '.', 3).toInt();
-//                        config.devname4 = root["devname4"].as<String>();
-//                        config.devip4[0] = getValue(root["devip4"].as<String>(), '.', 0).toInt();
-//                        config.devip4[1] = getValue(root["devip4"].as<String>(), '.', 1).toInt();
-//                        config.devip4[2] = getValue(root["devip4"].as<String>(), '.', 2).toInt();
-//                        config.devip4[3] = getValue(root["devip4"].as<String>(), '.', 3).toInt();
-
-                        
                         changeConfig();
                         // save json
                         fileurl = "buf.tmp";
@@ -287,7 +299,10 @@ void loop() {
                       printDisplay("Loading file:", fileurl, "USER: " + u, "");
                     }
                     // send response to client
-                    client.println("HTTP/1.1 200 OK");
+                    if(fileurl == "404.htm")
+                      client.println("HTTP/1.1 404 OK");
+                    else
+                      client.println("HTTP/1.1 200 OK");
                     if(fileurl.indexOf(".txt") != -1 || fileurl.indexOf(".htm") != -1) {
                         client.println("Content-Type: text/html");  
                     } else if(fileurl.indexOf(".css") != -1) {
@@ -297,8 +312,21 @@ void loop() {
                     }
                     client.println("Connnection: close");
                     client.println();
+                    float i = 0;
+                    int lastval = 0;
+                    if(debugMode) {
+                      lcd.setCursor(0,3);
+                    }
                     while(webFile.available()) {
-                      client.write(webFile.read()); // send web page to client
+                      byte r = webFile.read();
+                      if(debugMode) {
+                        i = i + sizeof(r);
+                        if(lastval != round((i / webFile.size()) * 20)) {
+                          lastval = round((i / webFile.size()) * 20);
+                          lcd.write((uint8_t)0);
+                        }
+                      }
+                      client.write(r); // send web page to client
                     }
                     webFile.close();
                     // reset buffer index and all buffer elements to 0
@@ -350,7 +378,7 @@ void loadConfig(bool reset) {
 
   if(debugMode) {
     root.prettyPrintTo(Serial);
-    Serial.println("--");
+    Serial.println("\n--");
   }
   config.vsn = root["vsn"].as<double>();
   config.usr = root["usr0"].as<String>();
@@ -418,7 +446,7 @@ void changeConfig() {
 
   if(debugMode) {
     root.prettyPrintTo(Serial);
-    Serial.println("--");
+    Serial.println("\n--");
   }
   
   // save config
@@ -435,9 +463,9 @@ void changeConfig() {
 }
 
 void writeTmp(const char *type, const char *msg) {
-  char tmp[60] = "{\"r\": \"";
+  char tmp[60] = "{\"r\":\"";
   strcat(tmp, type);
-  strcat(tmp, "\", \"m\": \"");
+  strcat(tmp, "\",\"m\":\"");
   strcat(tmp, msg);
   strcat(tmp, "\"}");
   
